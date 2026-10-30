@@ -1,220 +1,620 @@
+from pathlib import Path
 
-<!DOCTYPE html>
+html = r'''<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Abhirami Rajeev — Backend Engineer specializing in Go, distributed systems and cloud platforms.">
+  <meta name="description" content="Abhirami Rajeev — Backend Engineer specializing in Go, distributed systems, and cloud platforms.">
+  <meta name="theme-color" content="#0b1020">
   <title>Abhirami Rajeev | Backend Engineer</title>
+
   <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    :root {
+      --background: #0b1020;
+      --surface: #121a2d;
+      --surface-hover: #17233a;
+      --text: #edf2ff;
+      --muted: #a7b2c8;
+      --accent: #80d8ff;
+      --border: #273650;
+      --content-width: 1050px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      background: #0b1020;
-      color: #edf2ff;
+      background:
+        radial-gradient(ellipse at 78% -8%, #1a3151 0, transparent 37rem),
+        var(--background);
+      color: var(--text);
       font-family: Inter, Arial, sans-serif;
       line-height: 1.7;
     }
-    a { color: #80d8ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .container { max-width: 1050px; margin: auto; padding: 0 24px; }
-    header { border-bottom: 1px solid #273650; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: min(var(--content-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 16, 32, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
     nav {
-      min-height: 70px; display: flex;
-      align-items: center; justify-content: space-between;
-      gap: 20px; flex-wrap: wrap;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
     }
-    .brand { color: white; font-weight: bold; font-size: 1.1rem; }
-    .nav-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .nav-links a { color: #a7b2c8; }
-    .hero { padding: 100px 0 85px; }
-    .kicker { color: #80d8ff; letter-spacing: 3px; text-transform: uppercase; }
-    h1 { font-size: clamp(42px, 7vw, 76px); line-height: 1.1; margin: 20px 0; }
-    h2 { font-size: 30px; margin: 0 0 22px; }
-    h3 { margin-top: 0; }
-    .lead { color: #a7b2c8; max-width: 730px; font-size: 18px; }
-    section { padding: 65px 0; border-top: 1px solid #273650; }
-    .buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+
+    .brand {
+      color: var(--text);
+      font-weight: 750;
+      font-size: 1.08rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.92rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 100px 0 88px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      line-height: 1.06;
+      letter-spacing: -0.06em;
+    }
+
+    h2 {
+      margin: 0 0 22px;
+      font-size: clamp(1.7rem, 3vw, 2.1rem);
+      letter-spacing: -0.04em;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.35;
+    }
+
+    .lead {
+      max-width: 740px;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .hero-actions,
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
     .button {
-      display: inline-block; padding: 10px 17px;
-      border: 1px solid #334762; border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 17px;
+      border: 1px solid #334762;
+      border-radius: 8px;
+      font-weight: 650;
     }
-    .primary { background: #80d8ff; color: #08111f; font-weight: bold; }
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+    .button:hover {
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #08111f;
+      border-color: var(--accent);
+    }
+
+    /* Shared sections and cards */
+    section {
+      padding: 66px 0;
+      border-top: 1px solid var(--border);
+      scroll-margin-top: 78px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
     .card {
-      padding: 23px; border: 1px solid #273650;
-      border-radius: 13px; background: #121a2d;
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: linear-gradient(145deg, rgba(23, 35, 58, 0.9), rgba(18, 26, 45, 0.96));
     }
-    .card p, li { color: #a7b2c8; }
-    .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+    }
+
+    .card ul {
+      margin-bottom: 0;
+      padding-left: 20px;
+    }
+
+    .card li {
+      margin: 7px 0;
+    }
+
+    .role-label {
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 650;
+    }
+
+    /* Skills */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     .tag {
-      background: #17233a; border: 1px solid #334762;
-      padding: 5px 12px; border-radius: 20px; color: #d6e4f8;
+      padding: 5px 12px;
+      border: 1px solid #334762;
+      border-radius: 20px;
+      background: var(--surface-hover);
+      color: #d6e4f8;
+      font-size: 0.9rem;
     }
-    footer { padding: 25px 0; color: #a7b2c8; border-top: 1px solid #273650; }
-    @media(max-width: 650px) {
-      .grid { grid-template-columns: 1fr; }
-      .hero { padding: 70px 0; }
-      nav { padding: 15px 0; }
-      .nav-links { gap: 12px; font-size: 14px; }
+
+    /* Projects */
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .project-card p {
+      margin: 8px 0;
+    }
+
+    .project-card .project-tech {
+      margin-top: auto;
+      padding-top: 18px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 16px;
+    }
+
+    .project-links a {
+      font-size: 0.93rem;
+      font-weight: 700;
+    }
+
+    /* Contact and footer */
+    .contact-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .contact-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .contact-actions {
+      margin-top: 0;
+    }
+
+    footer {
+      padding: 25px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive layout */
+    @media (max-width: 700px) {
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px 0;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 13px;
+        font-size: 0.86rem;
+      }
+
+      .hero {
+        padding: 72px 0 64px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 54px 0;
+      }
+
+      .contact-actions {
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
+
 <body>
+  <header>
+    <nav class="container" aria-label="Main navigation">
+      <a class="brand" href="#">Abhirami Rajeev</a>
 
-<header>
-  <nav class="container">
-    <a class="brand" href="#">Abhirami Rajeev</a>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-</header>
-
-<main>
-  <section class="hero" style="border:0">
-    <div class="container">
-      <div class="kicker">Backend Engineer · India · Open to relocation</div>
-      <h1>Building reliable<br>backend systems.</h1>
-      <p class="lead">
-        Backend Engineer with 4+ years of experience building Go services,
-        microservices and distributed systems. I also work across cloud
-        infrastructure, Kubernetes platforms and CI/CD automation.
-      </p>
-      <div class="buttons">
-        <a class="button primary" href="#projects">Explore my work</a>
-        <a class="button" href="https://github.com/AbhiramiRajeev">GitHub ↗</a>
-        <a class="button" href="https://www.linkedin.com/in/abhirami-rajeev/">LinkedIn ↗</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
       </div>
-    </div>
-  </section>
+    </nav>
+  </header>
 
-  <section id="about">
-    <div class="container">
-      <h2>About me</h2>
-      <p class="lead">
-        I enjoy designing backend services and solving problems involving
-        concurrency, asynchronous processing, service communication and
-        production reliability. My work spans application development
-        and cloud-native platform engineering.
-      </p>
-    </div>
-  </section>
+  <main>
+    <!-- Introduction -->
+    <section class="hero" style="border-top: 0;">
+      <div class="container">
+        <div class="kicker">Backend Engineer · India · Open to relocation</div>
 
-  <section id="experience">
-    <div class="container">
-      <h2>Experience</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Backend Engineering · IBM</h3>
-          <ul>
-            <li>Built and owned Go components including an API server,
-                gRPC server and dispatcher.</li>
-            <li>Worked on service data models, backfill workflows
-                and asynchronous processing with RabbitMQ.</li>
-            <li>Supported Kubernetes-based platform environments
-                and production troubleshooting.</li>
-            <li>Developed integration tests using Ginkgo and Gomega.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Cloud Infrastructure Integrations</h3>
-          <ul>
-            <li>Developed Go connectors for AWS, Azure and GitHub.</li>
-            <li>Built workers to transform infrastructure metadata
-                into graph nodes and relationships.</li>
-            <li>Worked with PostgreSQL, Neo4j and Amazon Neptune.</li>
-            <li>Contributed to SDK migrations and CI automation.</li>
-          </ul>
-        </article>
+        <h1>Building reliable<br>backend systems.</h1>
+
+        <p class="lead">
+          Backend Engineer with 4+ years of experience building Go services,
+          microservices, and distributed systems. I also work across cloud
+          infrastructure, Kubernetes platforms, and CI/CD automation.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button primary" href="#projects">Explore my work</a>
+          <a class="button" href="https://github.com/AbhiramiRajeev"
+             target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a class="button" href="https://www.linkedin.com/in/abhirami-rajeev/"
+             target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="skills">
-    <div class="container">
-      <h2>Technical skills</h2>
-      <div class="tags">
-        <span class="tag">Go</span>
-        <span class="tag">Microservices</span>
-        <span class="tag">REST APIs</span>
-        <span class="tag">gRPC</span>
-        <span class="tag">PostgreSQL</span>
-        <span class="tag">Redis</span>
-        <span class="tag">Kafka</span>
-        <span class="tag">RabbitMQ</span>
-        <span class="tag">Kubernetes</span>
-        <span class="tag">Docker</span>
-        <span class="tag">AWS</span>
-        <span class="tag">Azure</span>
-        <span class="tag">Terraform</span>
-        <span class="tag">GitHub Actions</span>
-        <span class="tag">Jenkins</span>
-        <span class="tag">Ginkgo / Gomega</span>
-        <span class="tag">Prometheus</span>
-        <span class="tag">Grafana</span>
-        <span class="tag">Neo4j</span>
-        <span class="tag">Amazon Neptune</span>
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <h2>About me</h2>
+
+        <p class="lead">
+          I enjoy designing backend services and solving problems involving
+          concurrency, asynchronous processing, service communication, and
+          production reliability. My experience spans application development
+          and cloud-native platform engineering.
+        </p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="projects">
-    <div class="container">
-      <h2>Projects</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Distributed Cron & Job Queue Manager</h3>
-          <p>
-            A Go project exploring scheduled job execution,
-            queue processing and persistent job state.
-          </p>
-          <p><strong>Go · PostgreSQL · Redis · Kafka · gRPC</strong></p>
-          <p>Repository link coming soon.</p>
-        </article>
-        <article class="card">
-          <h3>Real-time Chat Application</h3>
-          <p>
-            A real-time messaging project exploring WebSocket
-            connections, rooms, message routing and persistence.
-          </p>
-          <p><strong>Go · WebSockets · Redis · MongoDB</strong></p>
-          <p>Repository link coming soon.</p>
-        </article>
+    <!-- Professional experience -->
+    <section id="experience">
+      <div class="container">
+        <h2>Selected experience</h2>
+
+        <div class="grid">
+          <article class="card">
+            <div class="role-label">IBM India Software Labs · Backend Engineer</div>
+            <h3>Backend services and platform engineering</h3>
+
+            <ul>
+              <li>
+                Built and owned Go components including an API server,
+                a gRPC server, and a dispatcher.
+              </li>
+              <li>
+                Worked on service data models, backfill workflows,
+                and asynchronous processing with RabbitMQ.
+              </li>
+              <li>
+                Supported Kubernetes-based platform environments and
+                investigated production issues across services and infrastructure.
+              </li>
+              <li>
+                Developed Go integration tests using Ginkgo and Gomega
+                and contributed to CI/CD automation.
+              </li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="role-label">Cloud infrastructure integrations</div>
+            <h3>Connectors and graph data processing</h3>
+
+            <ul>
+              <li>
+                Developed Go connectors integrating cloud and source-control
+                APIs, including AWS, Azure, and GitHub.
+              </li>
+              <li>
+                Built workers to transform infrastructure metadata stored
+                in PostgreSQL into graph nodes and relationships.
+              </li>
+              <li>
+                Worked with Neo4j and Amazon Neptune during graph-store evolution.
+              </li>
+              <li>
+                Contributed to connector reliability, SDK migrations,
+                and GitHub Actions automation.
+              </li>
+            </ul>
+          </article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact">
-    <div class="container">
-      <h2>Let's connect</h2>
-      <p class="lead">
-        Open to conversations about backend engineering,
-        distributed systems and platform engineering opportunities.
-      </p>
-      <div class="buttons">
-        <a class="button primary" href="mailto:abhirami.rjvb@gmail.com">Email me</a>
-        <a class="button" href="https://www.linkedin.com/in/abhirami-rajeev/">LinkedIn</a>
-        <a class="button" href="https://github.com/AbhiramiRajeev">GitHub</a>
+    <!-- Skills -->
+    <section id="skills">
+      <div class="container">
+        <h2>Technical skills</h2>
+
+        <div class="tags">
+          <span class="tag">Go</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">gRPC</span>
+          <span class="tag">Microservices</span>
+          <span class="tag">Concurrency</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Redis</span>
+          <span class="tag">Kafka</span>
+          <span class="tag">RabbitMQ</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">Docker</span>
+          <span class="tag">AWS</span>
+          <span class="tag">Azure</span>
+          <span class="tag">IBM Cloud</span>
+          <span class="tag">Terraform</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">Jenkins</span>
+          <span class="tag">Ginkgo</span>
+          <span class="tag">Gomega</span>
+          <span class="tag">Prometheus</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Neo4j</span>
+          <span class="tag">Amazon Neptune</span>
+        </div>
       </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <div class="container">
+        <h2>Selected projects</h2>
+
+        <p class="lead">
+          A selection of backend projects exploring distributed scheduling,
+          real-time communication, API design, and event-driven processing.
+        </p>
+
+        <div class="grid">
+          <article class="card project-card">
+            <h3>Distributed Cron &amp; Job Queue Manager</h3>
+
+            <p>
+              A distributed job platform built around separate scheduler
+              and worker services. The scheduler reads job definitions from
+              PostgreSQL, calculates the next run time from cron expressions,
+              and publishes due jobs to Kafka. Analyzer workers consume jobs,
+              execute them, track progress, and update PostgreSQL and Redis
+              with execution state.
+            </p>
+
+            <p class="project-tech">
+              Go · Kafka · PostgreSQL · Redis · Cron · Worker concurrency
+            </p>
+
+            <div class="project-links">
+              <a href="https://github.com/AbhiramiRajeev/go-distributed-scheduler"
+                 target="_blank" rel="noopener noreferrer">
+                View source on GitHub ↗
+              </a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <h3>Pulse Chat Platform</h3>
+
+            <p>
+              A real-time chat backend split into an API gateway and a chat
+              service. The gateway handles HTTP and WebSocket connections,
+              validates JWTs, and communicates with the chat service over
+              gRPC. PostgreSQL stores users, rooms, and memberships; MongoDB
+              stores messages; Redis Pub/Sub distributes new messages to
+              gateway WebSocket hubs. Client message IDs support safe retries
+              without creating duplicate messages.
+            </p>
+
+            <p class="project-tech">
+              Go · gRPC · WebSockets · JWT · PostgreSQL · MongoDB · Redis
+            </p>
+
+            <div class="project-links">
+              <a href="https://github.com/AbhiramiRajeev/pulse-chat-platform"
+                 target="_blank" rel="noopener noreferrer">
+                View source on GitHub ↗
+              </a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <h3>StyleHub E-Commerce Backend</h3>
+
+            <p>
+              A Go REST API for an online clothing store, covering customer
+              and admin workflows. It includes JWT-based registration and
+              login, product search and filtering, category management,
+              shopping cart operations, checkout with stock validation,
+              order history, and role-protected product and order
+              administration. PostgreSQL provides relational persistence,
+              with Docker Compose for local setup.
+            </p>
+
+            <p class="project-tech">
+              Go · REST APIs · PostgreSQL · JWT · Role-based access · Docker
+            </p>
+
+            <div class="project-links">
+              <a href="https://github.com/AbhiramiRajeev/go-ecommerce-backend"
+                 target="_blank" rel="noopener noreferrer">
+                View source on GitHub ↗
+              </a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <h3>Authentication Event Ingestion &amp; Analysis</h3>
+
+            <p>
+              A pair of Go services exploring an event-driven security
+              monitoring workflow. The ingestion service exposes an
+              API-key-authenticated HTTP endpoint, validates incoming
+              authentication events, and publishes them to Kafka. The analyzer
+              consumes events, uses Redis to track failed-login attempts
+              within a sliding time window and identify suspicious IP
+              addresses, persists detected incidents in PostgreSQL, and
+              publishes incident events to Kafka for downstream processing.
+            </p>
+
+            <p class="project-tech">
+              Go · Gin · Kafka · Redis · PostgreSQL · Docker
+            </p>
+
+            <div class="project-links">
+              <a href="https://github.com/AbhiramiRajeev/Ingestion-Service"
+                 target="_blank" rel="noopener noreferrer">
+                Ingestion Service ↗
+              </a>
+
+              <a href="https://github.com/AbhiramiRajeev/AIRO-Analyzer"
+                 target="_blank" rel="noopener noreferrer">
+                AIRO Analyzer ↗
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <div class="card contact-card">
+          <div>
+            <h2 style="margin-bottom: 8px;">Let's connect</h2>
+            <p>
+              Open to conversations about backend engineering,
+              distributed systems, and platform engineering opportunities.
+            </p>
+          </div>
+
+          <div class="contact-actions">
+            <a class="button primary" href="mailto:abhirami.rjvb@gmail.com">
+              Email me
+            </a>
+
+            <a class="button"
+               href="https://www.linkedin.com/in/abhirami-rajeev/"
+               target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+
+            <a class="button"
+               href="https://github.com/AbhiramiRajeev"
+               target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Abhirami Rajeev · Hosted with GitHub Pages
     </div>
-  </section>
-</main>
+  </footer>
 
-<footer>
-  <div class="container">
-    © <span id="year"></span> Abhirami Rajeev · Hosted with GitHub Pages
-  </div>
-</footer>
-
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
+'''
+
+path = Path("/mnt/data/index.html")
+path.write_text(html, encoding="utf-8")
+print(f"Created {path} ({len(html):,} characters, {len(html.splitlines())} lines)")
